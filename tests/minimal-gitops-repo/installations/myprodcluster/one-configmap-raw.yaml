@@ -1,0 +1,16 @@
+#
+# This is a raw yaml file, meant to be used with kubectl directly
+# instead of helm
+#
+
+apiVersion: v1
+data:
+  foo: 123
+  bar: "this is sparta!"
+kind: ConfigMap
+metadata:
+  labels:
+    app: myapp
+  name: myapp
+  namespace: app
+

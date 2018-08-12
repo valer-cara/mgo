@@ -1,0 +1,8 @@
+__mygitops:
+  chart: charts/pipeline
+  # Oh lord, this comment will be wiped
+  namespace: app
+  images:
+    github.com/foo/bar:
+      image: &fooBarImg "foo/bar"
+      tag: &fooBarTag "an_old_tag"

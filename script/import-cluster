@@ -1,0 +1,56 @@
+#!/bin/bash -e
+
+CLUSTER=$(kubectl config current-context)
+
+usage() {
+  cat <<EOF
+
+  Usage: ./import-cluster
+
+  Used to import an existing cluster's helm releases to a mygitops style repo.
+  Uses the current kubecontext: $CLUSTER
+
+EOF
+  exit 1
+}
+
+while getopts "h" arg; do
+  case $arg in
+    h)
+      usage
+      ;;
+    *)
+      usage
+  esac
+done
+
+ROOT=$(mktemp -d mygitops.XXXXXX)
+MANIFESTS=$ROOT/installations/$CLUSTER/
+
+echo "- Initialized in $ROOT. Cluster manifests in $MANIFESTS."
+mkdir -p $MANIFESTS
+
+echo "- Retrieving releases..."
+for rel in $(helm ls -q); do
+  echo "- Fetching values for release $rel"
+
+  file=$MANIFESTS/$rel-values.yaml
+  namespace=$(helm status $rel | grep NAMESPACE: | awk '{print $2}')
+  chart=$(helm get $rel | grep CHART: | awk '{print $2}')
+
+  cat > $file <<EOF
+__mygitops:
+  chart: xxxxx/$chart
+  version: xxxxx
+  name: $rel
+  namespace: $namespace
+EOF
+
+  helm get values $rel >> $file
+done
+
+echo ""
+echo "Great, all files created in $MANIFESTS.. "
+echo "Next step, please manually set the 'xxxxx' fields in those files: repository name, version"
+echo "Then final step, check helm diff for all of them, with the ./diff-imported-cluster script"
+

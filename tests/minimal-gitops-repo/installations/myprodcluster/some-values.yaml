@@ -1,0 +1,37 @@
+## Some comments here at the start
+
+mymap:
+  x: 123
+
+__mygitops:
+  chart: foo/bar
+
+  # Oh lord, this comment will be wiped
+  version: 0.1.0
+
+  name: foobar
+
+  namespace: app
+  images:
+    # Or a whole image. Use merges << when needed
+    github.com/foo/bar: &repo2
+      repo: "foo/bar"
+      tag: "an_old_image"
+
+    # Can either have a repo/tag combo
+    github.com/a/repo1: &repo1
+      image: "a/repo1:latest"
+
+
+othermap: # this is better
+  y: 123 # this is good
+  image: *repo1
+
+#####################################################
+# Some random comment here
+#####################################################
+
+finalmap:
+  z: 123
+  <<: *repo2
+

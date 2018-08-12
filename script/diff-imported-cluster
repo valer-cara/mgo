@@ -1,0 +1,40 @@
+#!/bin/bash -e
+
+MANIFESTS=$1
+DIFFS=$(mktemp -d /tmp/mygitops-import-diffs.XXXXXX)
+COMMANDS=$DIFFS/commands.sh
+
+usage() {
+  cat <<'EOF'
+  Usage: ./diff-imported-cluster <MANIFESTS_DIR>
+
+  Generates diff files
+EOF
+  exit 1
+}
+
+if [ -z $MANIFESTS ]; then usage; fi
+
+cd $MANIFESTS
+
+
+for rel in $(find . -type f -name "*-values.yaml" | xargs -n1 basename | sed -e 's/-values.yaml//g'); do
+  outfile="$DIFFS/$rel.diff"
+  chart=$(grep chart: ./$rel-values.yaml | head -1 | awk '{print $2}')
+  version=$(grep version: ./$rel-values.yaml | head -1 | awk '{print $2}')
+
+  extra=""
+  if [[ -f ./$rel-secrets.yaml ]]; then
+    extra="--values ./$rel-secrets.yaml"
+  fi
+
+  echo "helm diff upgrade $rel $chart --version $version --values ./$rel-values.yaml $extra > $outfile" >> $COMMANDS
+done
+
+
+cat $COMMANDS | parallel -t
+
+echo "Diffing complete, find your diffs in $DIFFS"
+
+
+

@@ -1,0 +1,6 @@
+helm:
+  repositories:
+  - name: stable
+    url: https://kubernetes-charts.storage.googleapis.com
+  - name: incubator
+    url: http://storage.googleapis.com/kubernetes-charts-incubator
