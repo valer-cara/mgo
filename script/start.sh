@@ -8,5 +8,5 @@ cd $WORKTREE
 git clone $GITOPS_REPO .
 git checkout $GITOPS_BRANCH
 
-/mygitops serve --listen=$LISTEN --gitops-repo=$WORKTREE $@
+/mgo serve --listen=$LISTEN --gitops-repo=$WORKTREE $@
 
