@@ -27,6 +27,6 @@ ENV HELM_HOME /root/.helm
 RUN helm init --client-only
 
 COPY ./script/start.sh /start.sh
-COPY --from=build /go/bin/mygitops /mygitops
+COPY --from=build /go/bin/mgo /mgo
 
-CMD ["/mygitops"]
+CMD ["/mgo"]
