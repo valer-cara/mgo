@@ -47,6 +47,7 @@ to your cluster via it's HTTP API.
 
 ## TODO
 
+- [ ] statefulset upgrades: currently fails when STS are updated. the crude way is `k delete sts --cascade=false xxxx`. maybe something else works better?
 - [ ] performance: too many helm upgrades/diffs can end up choking the master node/apiserver. need to limit. maybe rudder is lighter?
 - [ ] handle those non-helm manifests (those `*-raw.yaml` files that are raw kubernetes manifests, prob via `kubectl apply -f xxxxx`)
 - [ ] Define/Design authentication of clients
