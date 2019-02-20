@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/valer-cara/mgo/pkg/git"
-	"github.com/valer-cara/mgo/pkg/manifest"
 )
 
 func TestNewDeploy(t *testing.T) {
@@ -12,7 +11,7 @@ func TestNewDeploy(t *testing.T) {
 	x := NewDeploy(gitService, &FakeUpdater{}, &DeployOptions{
 		Author:      "Ronaldo",
 		TriggerRepo: "git.kernel.org",
-		Image: manifest.HeaderImage{
+		Image: DeployOptionsImage{
 			Repository: "quay.io/foobar",
 			Tag:        "beta",
 		},

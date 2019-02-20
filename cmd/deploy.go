@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/valer-cara/mgo/pkg/deploy"
-	"github.com/valer-cara/mgo/pkg/manifest"
 	"github.com/valer-cara/mgo/pkg/services"
 )
 
@@ -61,7 +60,7 @@ func doDeploy() error {
 	return nil
 }
 
-func splitImage(image string) manifest.HeaderImage {
+func splitImage(image string) deploy.DeployOptionsImage {
 	tag := "latest"
 	separatedImage := strings.Split(image, ":")
 
@@ -69,7 +68,7 @@ func splitImage(image string) manifest.HeaderImage {
 		tag = separatedImage[1]
 	}
 
-	return manifest.HeaderImage{
+	return deploy.DeployOptionsImage{
 		Repository: separatedImage[0],
 		Tag:        tag,
 	}

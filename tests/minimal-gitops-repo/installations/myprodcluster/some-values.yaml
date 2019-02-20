@@ -15,7 +15,7 @@ __mygitops:
   images:
     # Or a whole image. Use merges << when needed
     github.com/foo/bar: &repo2
-      repo: "foo/bar"
+      repsitory: "foo/bar"
       tag: "an_old_image"
 
     # Can either have a repo/tag combo

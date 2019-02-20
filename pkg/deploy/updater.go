@@ -109,10 +109,20 @@ func updateFile(valueFilePath string, deployOptions *DeployOptions) (bool, error
 		if strings.Compare(deployOptions.TriggerRepo, crtTargetRepo) == 0 {
 			proceedPatching = true
 			//log.Printf("Will update: %s -> %s:%s", crtTargetRepo, conf.Image, conf.Tag)
-			chartSection.Chart.Images[crtTargetRepo] = manifest.HeaderImage{
-				Repository: deployOptions.Image.Repository,
-				Tag:        deployOptions.Image.Tag,
+
+			if chartSection.Chart.Images[crtTargetRepo].Image != "" {
+				/// In the manifest, we only had `image: "foo:bar"`, will use the same for the update
+				chartSection.Chart.Images[crtTargetRepo] = manifest.HeaderImage{
+					Image: deployOptions.Image.Repository + ":" + deployOptions.Image.Tag,
+				}
+			} else {
+				// In the manifest, we had a repo/tag combo, we'll keep the same
+				chartSection.Chart.Images[crtTargetRepo] = manifest.HeaderImage{
+					Repository: deployOptions.Image.Repository,
+					Tag:        deployOptions.Image.Tag,
+				}
 			}
+
 			//log.Printf("Updated: %s -> %s:%s", crtTargetRepo, chartSection.Chart.Images[crtTargetRepo].Image, chartSection.Chart.Images[crtTargetRepo].Tag)
 		}
 	}

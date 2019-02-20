@@ -27,8 +27,12 @@ type Header struct {
 }
 
 type HeaderImage struct {
-	Repository string `json:"repository"`
-	Tag        string `json:"tag"`
+	// Either repo/tag combo
+	Repository string `yaml:"repository,omitempty"`
+	Tag        string `yaml:"tag,omitempty"`
+
+	// Or image
+	Image string `yaml:"image,omitempty"`
 }
 
 func (h *Header) Validate() error {

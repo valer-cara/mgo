@@ -13,6 +13,11 @@ type Deploy struct {
 	updaterService Updater
 }
 
+type DeployOptionsImage struct {
+	Repository string `json:"repository"`
+	Tag        string `json:"tag"`
+}
+
 type DeployOptions struct {
 	// The URL of the repo that triggered this deploy
 	TriggerRepo string `json:"triggerRepo"`
@@ -21,10 +26,7 @@ type DeployOptions struct {
 	Author string `json:"author"`
 
 	// The docker image built by the CI pipeline for this deploy
-	Image struct {
-		Repository string `json:"repository"`
-		Tag        string `json:"tag"`
-	} `json:"image"`
+	Image DeployOptionsImage
 
 	// The target cluster for this deploy
 	Cluster string `json:"cluster"`

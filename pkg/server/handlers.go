@@ -9,7 +9,6 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/valer-cara/mgo/pkg/deploy"
-	"github.com/valer-cara/mgo/pkg/manifest"
 	"github.com/valer-cara/mgo/pkg/notification"
 	"github.com/valer-cara/mgo/pkg/services"
 )
@@ -105,7 +104,7 @@ func (dh *DeployHandler) getDeployOptions() *deploy.DeployOptions {
 		TriggerRepo: dh.formTriggerRepo,
 		Author:      dh.formAuthor,
 		Cluster:     dh.formCluster,
-		Image: manifest.HeaderImage{
+		Image: deploy.DeployOptionsImage{
 			Repository: dh.formImageRepo,
 			Tag:        dh.formImageTag,
 		},

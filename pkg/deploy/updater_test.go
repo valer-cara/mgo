@@ -3,7 +3,6 @@ package deploy
 import (
 	"testing"
 
-	"github.com/valer-cara/mgo/pkg/manifest"
 	"github.com/valer-cara/mgo/pkg/testutils"
 )
 
@@ -15,7 +14,7 @@ func TestOnlyChangeChartSection(t *testing.T) {
 	err := updater.Update(repo, &DeployOptions{
 		Author:      "Ronaldo",
 		TriggerRepo: "github.com/a/repo1",
-		Image: manifest.HeaderImage{
+		Image: DeployOptionsImage{
 			Repository: "quay.io/foobar",
 			Tag:        "beta",
 		},
