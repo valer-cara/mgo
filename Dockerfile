@@ -20,7 +20,7 @@ FROM ubuntu
 RUN apt-get update && apt-get install -y ca-certificates git curl make
 
 ## TODO: match the version of helm to cluster, needs to be handled on a higher level
-RUN curl --output - https://storage.googleapis.com/kubernetes-helm/helm-v2.9.0-linux-amd64.tar.gz | tar zxvf - \
+RUN curl --output - https://storage.googleapis.com/kubernetes-helm/helm-v2.13.1-linux-amd64.tar.gz | tar zxvf - \
  && mv linux-amd64/helm /usr/local/bin/helm
 
 ENV HELM_HOME /root/.helm
