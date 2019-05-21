@@ -1,6 +1,8 @@
 package config
 
 import (
+	"errors"
+	"fmt"
 	"io/ioutil"
 
 	"github.com/valer-cara/mgo/pkg/helm"
@@ -30,7 +32,7 @@ func LoadGlobalConfig(path string) error {
 	}
 
 	if err := yaml.Unmarshal(configFile, &Global); err != nil {
-		return err
+		return errors.New(fmt.Sprintf("YAML Unmarshal error: %s: %v", configFile, err))
 	}
 
 	return nil

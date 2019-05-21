@@ -160,13 +160,15 @@ type yamlRepoMap struct {
 // XXX: Implementation specific
 func (h *HelmCmd) ListRepos() ([]HelmRepo, error) {
 	var repos yamlRepoMap
-	reposFile, err := ioutil.ReadFile(path.Join(h.helmHome, "repository/repositories.yaml"))
+
+	filePath := path.Join(h.helmHome, "repository/repositories.yaml")
+	reposFile, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
 
 	if err := yaml.Unmarshal(reposFile, &repos); err != nil {
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("YAML Unmarshal error: %s: %v", filePath, err))
 	}
 
 	return repos.Repositories, nil

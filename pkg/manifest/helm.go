@@ -2,6 +2,7 @@ package manifest
 
 import (
 	"errors"
+	"fmt"
 	yaml "gopkg.in/yaml.v2"
 	"io/ioutil"
 
@@ -70,7 +71,7 @@ func ParseHeader(path string) (*Header, error) {
 
 	err = yaml.Unmarshal(file, &parsed)
 	if err != nil {
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("YAML Unmarshal error: %s: %v", path, err))
 	}
 
 	return parsed.Chart, nil

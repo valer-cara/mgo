@@ -109,7 +109,7 @@ func (r *ReleaseManagerBatched) initPerClusterServices() error {
 	kc := kubeconfigClusters{}
 	err = yaml.Unmarshal(file, &kc)
 	if err != nil {
-		return err
+		return errors.New(fmt.Sprintf("YAML unmarshal %s, %v", r.options.KubeConfig, err))
 	}
 
 	// For each context (cluster) defined in kubeconfig, initialize a helm/sync
