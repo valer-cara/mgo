@@ -193,7 +193,7 @@ func (r *ReleaseManagerBatched) createPostBatchHook() func() error {
 			r.gitService.Push,
 			retry.Attempts(4),
 			retry.OnRetry(func(n uint, err error) {
-				log.Warnln("Retrying git push: %v", err)
+				log.Warnln("Retrying git push: ", err)
 				if err := r.gitService.Pull("-r"); err != nil {
 					log.Warnln("Git pull -r failed: ", err)
 				}
@@ -237,7 +237,7 @@ func (r *ReleaseManagerBatched) monitorBatch() {
 	for {
 		select {
 		case <-r.chanBatchDone:
-			log.Println("Batch done\n")
+			log.Println("Batch done")
 		case err := <-r.chanBatchErr:
 			log.Errorf("Batch error: %v", err)
 		}

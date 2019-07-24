@@ -127,7 +127,7 @@ func (dh *DeployHandler) sendNotification(err error) error {
 		err,
 	)
 	if err != nil {
-		log.Error("Error sending notification, err: %v", err)
+		log.Errorf("Error sending notification, err: %v", err)
 	}
 	return errNotif
 }

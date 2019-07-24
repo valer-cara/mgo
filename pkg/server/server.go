@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 	"github.com/valer-cara/mgo/pkg/config"
 	"github.com/valer-cara/mgo/pkg/notification/slack"
 	"github.com/valer-cara/mgo/pkg/services"
-	"github.com/gorilla/mux"
-	log "github.com/sirupsen/logrus"
 )
 
 const writeErrorsToClient = true

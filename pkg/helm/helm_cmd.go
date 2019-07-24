@@ -194,7 +194,7 @@ func (h *HelmCmd) SyncRelease(release *HelmRelease, valueFiles []string) error {
 
 	output, err := h.execer.Exec(cmd...)
 	if err != nil {
-		log.Errorf("Helm exec error: ", string(output))
+		log.Errorf("Helm exec error: %v", string(output))
 		return err
 	}
 
