@@ -5,6 +5,9 @@ import (
 	"github.com/spf13/cobra"
 	"os"
 
+	"github.com/valer-cara/mgo/pkg/config"
+	"github.com/valer-cara/mgo/pkg/notification"
+	"github.com/valer-cara/mgo/pkg/notification/slack"
 	"github.com/valer-cara/mgo/pkg/server"
 )
 
@@ -47,11 +50,24 @@ func doServe() error {
 	log.Printf("  - kubeconfig at %s", kubeconfig)
 	log.Printf("  - helmHome at %s", helmHome)
 
+	var slackWebhookNotifier notification.Notification
+
+	if len(config.Global.Notification.Slack.Webhookurl) > 0 {
+		log.Printf("  - initialized slack notifications to channel %s", config.Global.Notification.Slack.Channel)
+		slackWebhookNotifier = slack.NewWebhook(
+			config.Global.Notification.Slack.Webhookurl,
+			config.Global.Notification.Slack.Channel,
+			config.Global.Notification.Slack.Username,
+			config.Global.Notification.Slack.Icon,
+		)
+	}
+
 	serv := server.NewServer(
 		serveAddr,
 		gitopsRepo,
 		helmHome,
 		kubeconfig,
+		slackWebhookNotifier,
 		dryRun,
 	)
 	err := serv.Serve()

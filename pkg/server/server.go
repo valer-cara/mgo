@@ -7,8 +7,7 @@ import (
 
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
-	"github.com/valer-cara/mgo/pkg/config"
-	"github.com/valer-cara/mgo/pkg/notification/slack"
+	"github.com/valer-cara/mgo/pkg/notification"
 	"github.com/valer-cara/mgo/pkg/services"
 )
 
@@ -21,13 +20,17 @@ type Server struct {
 	helmHome   string
 	dryRun     bool
 
+	// XXX: Maybe not the best way to dependency inject this, but sticking
+	// this way for now...
+	notifier       notification.Notification
 	releaseManager services.ReleaseManager
 }
 
-func NewServer(listenAddr, gitopsRepo, helmHome, kubeconfig string, dryRun bool) *Server {
+func NewServer(listenAddr, gitopsRepo, helmHome, kubeconfig string, notifier notification.Notification, dryRun bool) *Server {
 	return &Server{
 		listenAddr: listenAddr,
 
+		notifier: notifier,
 		releaseManager: services.NewReleaseManagerBatched(&services.ReleaseManagerBatchedOptions{
 			GitopsRepo: gitopsRepo,
 			KubeConfig: kubeconfig,
@@ -45,16 +48,7 @@ func (s *Server) Serve() error {
 
 	deployHandler := DeployHandler{
 		releaseManager: s.releaseManager,
-	}
-
-	// If slack webhook is specified add it as a notification
-	if len(config.Global.Notification.Slack.Webhookurl) > 0 {
-		deployHandler.notification = slack.NewWebhook(
-			config.Global.Notification.Slack.Webhookurl,
-			config.Global.Notification.Slack.Channel,
-			config.Global.Notification.Slack.Username,
-			config.Global.Notification.Slack.Icon,
-		)
+		notification:   s.notifier,
 	}
 
 	r := mux.NewRouter()
