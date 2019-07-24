@@ -36,6 +36,7 @@ func (dh DeployHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	status, err := (&dh).init(r)
 	if err != nil {
 		handleServerError(err, status, r, w)
+		// XXX: this will bugout, need to get all these notifs out of here..
 		dh.sendNotification(err)
 		return
 	}

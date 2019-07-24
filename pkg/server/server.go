@@ -46,7 +46,16 @@ func (s *Server) Serve() error {
 		return err
 	}
 
+	// XXX: def need a better way to notify
+	// like a middleware to handle errors
 	deployHandler := DeployHandler{
+		releaseManager: s.releaseManager,
+		notification:   s.notifier,
+	}
+
+	// XXX: this is largely a dupe, shuold DRY this out..
+	// it def. didn't start as a dupe =)
+	dockerhubHandler := DockerhubHandler{
 		releaseManager: s.releaseManager,
 		notification:   s.notifier,
 	}
@@ -54,6 +63,7 @@ func (s *Server) Serve() error {
 	r := mux.NewRouter()
 	r.HandleFunc("/", IndexHandler)
 	r.Handle("/deploy", deployHandler).Methods("POST")
+	r.Handle("/deploy/dockerhub", dockerhubHandler).Methods("POST")
 	http.Handle("/", r)
 
 	log.Println("Server started")
