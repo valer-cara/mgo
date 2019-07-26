@@ -24,7 +24,8 @@ type Header struct {
 
 	// Images map.
 	// XXX: needs documentation
-	Images map[string]HeaderImage
+	Images    map[string]HeaderImage
+	TagFilter TagFilter
 }
 
 type HeaderImage struct {
@@ -34,6 +35,10 @@ type HeaderImage struct {
 
 	// Or image
 	Image string `yaml:"image,omitempty"`
+}
+
+type TagFilter struct {
+	Match string
 }
 
 func (h *Header) Validate() error {
